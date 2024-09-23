@@ -1,0 +1,36 @@
+.app-country-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid wheat;
+    border-radius: 12px;
+    padding: 16px;
+    width: 300px;
+    box-shadow: 0 4px 8px black;
+    transition: transform 0.2s ease;
+}
+  
+.app-country-card:hover {
+    transform: scale(1.05);
+}
+  
+.country-flag {
+    width: 72px;
+    height: auto;
+    margin-right: 16px;
+}
+  
+.country-details {
+    display: flex;
+    flex-direction: column;
+}
+  
+.country-name {
+    font-size: 24px;
+    margin: 0;
+}
+  
+.country-info {
+    font-size: 16px;
+    color: #555;
+    margin: 4px 0;
+}

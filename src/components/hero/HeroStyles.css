@@ -1,0 +1,11 @@
+.app-hero {
+    background: url(../../assets/hero.jpg);    
+    padding: 150px;
+}
+
+.app-hero-text {
+    margin: 0;
+    font-size: 50px;
+    color: white;
+    text-shadow: 1px 1px 2px black;;
+}
