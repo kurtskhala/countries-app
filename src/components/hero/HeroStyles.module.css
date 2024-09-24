@@ -1,9 +1,9 @@
-.app-hero {
+.appHero {
     background: url(../../assets/hero.jpg);    
     padding: 150px;
 }
 
-.app-hero-text {
+.appHeroText {
     margin: 0;
     font-size: 50px;
     color: white;

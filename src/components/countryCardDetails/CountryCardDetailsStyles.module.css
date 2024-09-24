@@ -1,0 +1,4 @@
+.countryDetails {
+    display: flex;
+    flex-direction: column;
+}

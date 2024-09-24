@@ -1,0 +1,14 @@
+.appCountryCard {
+    display: flex;
+    align-items: center;
+    border: 1px solid wheat;
+    border-radius: 12px;
+    padding: 16px;
+    width: 300px;
+    box-shadow: 0 4px 8px black;
+    transition: transform 0.2s ease;
+}
+  
+.appCountryCard:hover {
+    transform: scale(1.05);
+}

@@ -1,9 +1,9 @@
-import "./HeroStyles.css";
+import styles from "./HeroStyles.module.css";
 
-const Hero = () => {
+const Hero: React.FC = () => {
   return (
-    <div className="app-hero">
-        <p className="app-hero-text">This is site about countries</p>
+    <div className={styles.appHero}>
+        <p className={styles.appHeroText}>This is site about countries</p>
     </div>
   )
 }
