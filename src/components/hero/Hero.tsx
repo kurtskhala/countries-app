@@ -1,4 +1,4 @@
-import styles from "./HeroStyles.module.css";
+import styles from "#/hero/HeroStyles.module.css";
 
 const Hero: React.FC = () => {
   return (

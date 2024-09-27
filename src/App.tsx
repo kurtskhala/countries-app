@@ -1,15 +1,11 @@
-import './App.css';
-import Countries from './components/countries/Countries.js';
-import Header from './components/header/Header.js';
-import Hero from './components/hero/Hero.js';
+import '@/App.css';
+import Home from '@/pages/home';
 
 function App() {
 
   return (
     <>
-      <Header />
-      <Hero />
-      <Countries />
+      <Home />
     </>
   )
 }

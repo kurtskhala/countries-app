@@ -1,4 +1,4 @@
-import styles from "./CountryCardStyles.module.css";
+import styles from "#/countries/CountryCard/CountryCardStyles.module.css";
 
 type Children = {
   children: React.ReactNode

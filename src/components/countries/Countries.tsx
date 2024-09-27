@@ -1,9 +1,9 @@
-import CountryCardContent from "../countryCardContent/CountryCardContent";
-import CountryCardDetails from "../countryCardDetails/CountryCardDetails";
-import CountryCardHeader from "../countryCardHeader/CountryCardHeader";
-import CountryCardImage from "../countryCardImage/CountryCardImage";
-import CountryCard from "../countryCard/CountryCard"
-import styles from "./CountriesStyles.module.css";
+import Content from "@/components/countries/countryCard/content";
+import Details from "@/components/countries/countryCard/details";
+import Header from "@/components/countries/countryCard/header";
+import Image from "@/components/countries/countryCard/image";
+import CountryCard from "#/countries/countryCard"
+import styles from "#/countries/CountriesStyles.module.css";
 import React from "react";
 
 const country = {
@@ -18,11 +18,10 @@ const Countries: React.FC = () => {
   return (
     <div className={styles.appCountries}>
         <CountryCard> 
-          <CountryCardImage flag={country.flag} name={country.name}/>
-            <CountryCardDetails>
-              <CountryCardHeader name={country.name}/>
-              <CountryCardContent capital={country.capital} population={country.population}/>
-            </CountryCardDetails>
+          <Image flag={country.flag} name={country.name}/>
+            <Details renderHeader={<Header name={country.name}/>}>
+              <Content capital={country.capital} population={country.population}/>
+            </Details>
         </CountryCard>
     </div>
   )
