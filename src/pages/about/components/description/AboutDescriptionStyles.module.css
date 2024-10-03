@@ -1,0 +1,14 @@
+.appAboutSection {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    background-color: aquamarine;
+    color: #34495e;
+}
+
+.appAboutSectionTitle{
+    font-size: '2em';
+    margin-bottom: '10px';
+    color: #2c3e50;
+}

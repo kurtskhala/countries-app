@@ -1,5 +1,5 @@
 .appHero {
-    background: url(../../assets/hero.jpg);    
+    background: url(@/assets/hero.jpg);    
     padding: 150px;
 }
 

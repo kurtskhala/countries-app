@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "#/countries/CountryCard/Header/HeaderStyles.module.css";
+import styles from "./HeaderStyles.module.css";
 
 type Props = {
     name: string

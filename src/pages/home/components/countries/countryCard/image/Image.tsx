@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "#/countries/CountryCard/Image/ImageStyles.module.css";
+import styles from "./ImageStyles.module.css";
 
 type Props = {
     flag: string,

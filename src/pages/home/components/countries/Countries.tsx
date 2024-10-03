@@ -1,9 +1,9 @@
-import Content from "@/components/countries/countryCard/content";
-import Details from "@/components/countries/countryCard/details";
-import Header from "@/components/countries/countryCard/header";
-import Image from "@/components/countries/countryCard/image";
-import CountryCard from "#/countries/countryCard"
-import styles from "#/countries/CountriesStyles.module.css";
+import Content from "@/pages/home/components/countries/countryCard/content";
+import Details from "@/pages/home/components/countries/countryCard/details";
+import Header from "@/pages/home/components/countries/countryCard/header";
+import Image from "@/pages/home/components/countries/countryCard/image";
+import CountryCard from "@/pages/home/components/countries/countryCard"
+import styles from "./CountriesStyles.module.css";
 import React from "react";
 
 const country = {

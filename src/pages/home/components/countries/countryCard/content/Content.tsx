@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "#/countries/CountryCard/Content/ContentStyles.module.css";
+import styles from "./ContentStyles.module.css";
 
 type ContentProps = {
     capital: string;
