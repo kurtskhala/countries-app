@@ -19,8 +19,11 @@ const Header: React.FC = () => {
         <NavLink className={handleActiveNav} to={"./about"}>
           <span>about</span>
         </NavLink>
-        <NavLink className={handleActiveNav} to={"./"}>
-          <span>home</span>
+        <NavLink className={handleActiveNav} to={"./countries"}>
+          <span>countries</span>
+        </NavLink>
+        <NavLink className={handleActiveNav} to={"./contact"}>
+          <span>contact</span>
         </NavLink>
       </div>
     </header>

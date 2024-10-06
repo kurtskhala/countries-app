@@ -4,9 +4,11 @@
     border: 1px solid wheat;
     border-radius: 12px;
     padding: 16px;
-    width: 300px;
+    flex: 1 1 320px;
+    width: 320px;
     box-shadow: 0 4px 8px black;
     transition: transform 0.2s ease;
+    cursor: pointer;
 }
   
 .appCountryCard:hover {
