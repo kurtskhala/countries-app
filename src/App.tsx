@@ -1,12 +1,16 @@
 import '@/App.css';
-import CountriesListView from './pages/countries/views/list';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DefaultLayout from './layouts/default';
 import AboutView from './pages/about/views/about';
 import SingleCountryView from './pages/countries/views/single';
 import ContactView from './pages/contact/views/contact';
+import { lazy, Suspense } from "react";
+
 
 function App() {
+
+  const LazyCountries = lazy(() => import("@/pages/countries/views/list"))
+
 
   return (
     <>
@@ -14,7 +18,11 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path='/' element={<>Landing</>}></Route>
-          <Route path='/countries' element={<CountriesListView />}></Route>
+          <Route path='/countries' element={
+            <Suspense fallback={<div>Loading ...</div>}>
+              <LazyCountries />
+            </Suspense>
+          }></Route>
           <Route path='/about' element={<AboutView />}></Route>
           <Route path='/contact' element={<ContactView />}></Route>
           <Route path='/countries/:id' element={<SingleCountryView />} />
