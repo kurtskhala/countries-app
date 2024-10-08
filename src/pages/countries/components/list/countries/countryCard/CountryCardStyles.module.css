@@ -1,4 +1,5 @@
 .appCountryCard {
+    position: relative;
     display: flex;
     align-items: center;
     border: 1px solid wheat;
@@ -8,7 +9,6 @@
     width: 320px;
     box-shadow: 0 4px 8px black;
     transition: transform 0.2s ease;
-    cursor: pointer;
 }
   
 .appCountryCard:hover {

@@ -6,12 +6,9 @@ import SingleCountryView from './pages/countries/views/single';
 import ContactView from './pages/contact/views/contact';
 import { lazy, Suspense } from "react";
 
+const LazyCountries = lazy(() => import("@/pages/countries/views/list"))
 
 function App() {
-
-  const LazyCountries = lazy(() => import("@/pages/countries/views/list"))
-
-
   return (
     <>
     <BrowserRouter>

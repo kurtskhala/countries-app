@@ -3,3 +3,18 @@
     color: #555;
     margin: 4px 0;
 }
+
+.countryInfoReadMore {
+    margin: 4px 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.countryInfoReadMore:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+.countryInfoReadMore p{
+    margin: 0;
+}
