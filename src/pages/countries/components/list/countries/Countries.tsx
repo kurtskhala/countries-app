@@ -4,87 +4,70 @@ import Header from "@/pages/countries/components/list/countries/countryCard/head
 import Image from "@/pages/countries/components/list/countries/countryCard/image";
 import CountryCard from "@/pages/countries/components/list/countries/countryCard";
 import styles from "./CountriesStyles.module.css";
-import React, { useState } from "react";
+import React, { FormEvent, useReducer } from "react";
 import Likes from "./countryCard/likes";
+import { countriesReducer } from "./reducer/reducer";
+import { initialState } from "./reducer/state";
+import SortButtons from "./sortButtons";
+import AddCountry from "./addCountry";
 
 const Countries: React.FC = () => {
-  const [sorted, setSorted] = useState(false);
-  const [countries, setCountries] = useState([
-    {
-      id: "1",
-      name: "Georgia",
-      capital: "Tbilisi",
-      population: "3.71 milion",
-      flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Georgia.svg/920px-Flag_of_Georgia.svg.png",
-      likes: 0,
-    },
-    {
-      id: "2",
-      name: "Kingdom of Belgium",
-      capital: "Brussels",
-      population: "11.76 milion",
-      flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Belgium.svg/188px-Flag_of_Belgium.svg.png",
-      likes: 0,
-    },
-    {
-      id: "3",
-      name: "Czech Republic",
-      capital: "Prague",
-      population: "10.9 milion",
-      flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/188px-Flag_of_the_Czech_Republic.svg.png",
-      likes: 0,
-    },
-  ]);
+  const [countries, dispatch] = useReducer(countriesReducer, initialState);
 
   const handleLikeButton = (id: string) => {
-    const update = countries.map((country) => {
-      if (country.id === id) {
-        return { ...country, likes: country.likes + 1 };
-      }
-      return { ...country };
+    dispatch({
+      type: "like",
+      payload: {
+        id,
+      },
     });
-    if (sorted) {
-      setCountries(update.sort((a, b) => b.likes - a.likes));
-    } else {
-      setCountries(update);
-    }
   };
 
-  const handleSortButton = () => {
-    setSorted((prev) => !prev);
-    if (!sorted) {
-      const update = countries.sort((a, b) => b.likes - a.likes);
-      setCountries(update);
-    } else {
-      const update = countries.sort((a, b) => a.id - b.id);
-      setCountries(update);
+  const handleSortButton = (sortType: "asc" | "desc" | "normal") => {
+    dispatch({ type: "sort", payload: { sortType } });
+  };
+
+  const handleCreateCounty = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const countyObj: any = {};
+    const formData = new FormData(e.currentTarget);
+    for (const [key, value] of formData) {
+      countyObj[key] = value;
     }
+
+    dispatch({ type: "create", payload: { countyObj } });
+  };
+
+  const handleDeleteCountry = (id: string) => {
+    dispatch({ type: "delete", payload: { id } });
   };
 
   return (
-    <div>
-      <button className={styles.sortButton} onClick={handleSortButton}>
-        {sorted ? "Do not sort" : "Sort"}
-      </button>
+    <div className={styles.appCountriesContainer}>
+      <SortButtons handleSortButton={handleSortButton} />
+      <AddCountry onCountyCreate={(e) => handleCreateCounty(e)} />
       <div className={styles.appCountries}>
-        {countries.map((country) => {
-          return (
-            <CountryCard key={country.id}>
-              <Image flag={country.flag} name={country.name} />
-              <Details renderHeader={<Header name={country.name} />}>
-                <Content
-                  capital={country.capital}
-                  population={country.population}
-                  id={country.id}
+        {countries
+          .sort((a, b) => b.active - a.active)
+          .map((country) => {
+            return (
+              <CountryCard id={country.id} onCountryDelete={handleDeleteCountry} active={country.active} key={country.id}>
+                <Image flag={country.flag} name={country.name} />
+                <Details renderHeader={<Header name={country.name} />}>
+                  <Content
+                    capital={country.capital}
+                    population={country.population}
+                    id={country.id}
+                    onCountryDelete={handleDeleteCountry}
+                  />
+                </Details>
+                <Likes
+                  handleLikeButton={() => handleLikeButton(country.id)}
+                  likes={country.likes}
                 />
-              </Details>
-              <Likes
-                handleLikeButton={() => handleLikeButton(country.id)}
-                likes={country.likes}
-              />
-            </CountryCard>
-          );
-        })}
+              </CountryCard>
+            );
+          })}
       </div>
     </div>
   );

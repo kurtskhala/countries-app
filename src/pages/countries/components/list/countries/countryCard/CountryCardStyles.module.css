@@ -6,11 +6,35 @@
     border-radius: 12px;
     padding: 16px;
     flex: 1 1 320px;
-    width: 320px;
+    max-width: 320px;
     box-shadow: 0 4px 8px black;
     transition: transform 0.2s ease;
 }
   
 .appCountryCard:hover {
     transform: scale(1.05);
+}
+
+.appCountryCardDeleteedContainer {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.705);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.appCountryCardDeleteedContainerText {
+    color: white;
+    font-size: 25px;
+}
+
+.appCountryCardDeleteedContainerButton {
+    cursor: pointer;
 }

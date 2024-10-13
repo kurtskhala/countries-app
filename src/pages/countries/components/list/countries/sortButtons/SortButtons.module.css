@@ -1,0 +1,18 @@
+.sortButtons {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.sortButton {
+    width: 150px;
+    height: 30px;
+    margin-top: 20px;
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sortButton:hover {
+    background-color: aquamarine;
+}

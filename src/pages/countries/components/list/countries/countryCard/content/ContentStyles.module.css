@@ -18,3 +18,26 @@
 .countryInfoReadMore p{
     margin: 0;
 }
+
+.countryInfoButtons {
+    display: flex;
+    gap: 20px;
+}
+
+.coutryDelete {
+    border: none;
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.coutryDelete:hover {
+    transform: scale(1.1);
+}
+
+.coutryActivate {
+    color: white;
+    font-size: 15px;
+    font-weight: 300;
+}
