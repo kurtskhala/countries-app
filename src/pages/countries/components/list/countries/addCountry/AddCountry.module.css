@@ -19,3 +19,8 @@
 .addCountryFormsubmitButton {
     cursor: pointer;
 }
+
+.formError {
+    color: red;
+    font-size: 12px;
+}

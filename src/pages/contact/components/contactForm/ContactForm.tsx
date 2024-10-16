@@ -9,16 +9,46 @@ const ContactForm = () => {
     message: "",
   });
 
+  const [formDataError, setFormDataError] = useState({
+    name: false,
+    surname: false,
+    email: false,
+    message: false,
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      name: !formData.name.trim(),
+      surname: !formData.surname.trim(),
+      email: !formData.email.trim(),
+      message: !formData.message.trim(),
+    };
+
+    setFormDataError(newErrors);
+    return !Object.values(newErrors).some((error) => error);
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (formDataError[name]) {
+      setFormDataError((prev) => ({ ...prev, [name]: false }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    if (validateForm()) {
+      console.log(formData);
+      setFormData({
+        name: "",
+        surname: "",
+        email: "",
+        message: "",
+      });
+    }
   };
 
   function handleKayDown(e: KeyboardEvent<HTMLInputElement>) {
@@ -39,6 +69,9 @@ const ContactForm = () => {
             value={formData.name}
             onChange={handleChange}
           />
+          {formDataError.name && (
+            <span>Name is required</span>
+          )}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="surname">გვარი:</label>
@@ -49,6 +82,9 @@ const ContactForm = () => {
             value={formData.surname}
             onChange={handleChange}
           />
+          {formDataError.surname && (
+            <span>Surname is required</span>
+          )}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="email">Email:</label>
@@ -59,6 +95,9 @@ const ContactForm = () => {
             value={formData.email}
             onChange={handleChange}
           />
+          {formDataError.email && (
+            <span>Mail is required</span>
+          )}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="message">შეტყობინება:</label>
@@ -68,6 +107,9 @@ const ContactForm = () => {
             value={formData.message}
             onChange={handleChange}
           />
+          {formDataError.message && (
+            <span>Message is required</span>
+          )}
         </div>
         <button
           type="submit"
