@@ -4,7 +4,7 @@ import Header from "@/pages/countries/components/list/countries/countryCard/head
 import Image from "@/pages/countries/components/list/countries/countryCard/image";
 import CountryCard from "@/pages/countries/components/list/countries/countryCard";
 import styles from "./CountriesStyles.module.css";
-import React, { FormEvent, useReducer } from "react";
+import React, { useReducer } from "react";
 import Likes from "./countryCard/likes";
 import { countriesReducer } from "./reducer/reducer";
 import { initialState } from "./reducer/state";
@@ -27,15 +27,8 @@ const Countries: React.FC = () => {
     dispatch({ type: "sort", payload: { sortType } });
   };
 
-  const handleCreateCounty = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const countyObj: any = {};
-    const formData = new FormData(e.currentTarget);
-    for (const [key, value] of formData) {
-      countyObj[key] = value;
-    }
-
-    dispatch({ type: "create", payload: { countyObj } });
+  const handleCreateCounty = (formData: any) => {
+    dispatch({ type: "create", payload: { formData } });
   };
 
   const handleDeleteCountry = (id: string) => {
@@ -45,7 +38,7 @@ const Countries: React.FC = () => {
   return (
     <div className={styles.appCountriesContainer}>
       <SortButtons handleSortButton={handleSortButton} />
-      <AddCountry onCountyCreate={(e) => handleCreateCounty(e)} />
+      <AddCountry onCountyCreate={handleCreateCounty} />
       <div className={styles.appCountries}>
         {countries
           .sort((a, b) => b.active - a.active)

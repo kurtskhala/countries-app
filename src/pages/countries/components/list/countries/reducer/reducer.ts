@@ -41,11 +41,12 @@ export const countriesReducer = (
   }
 
   if (action.type === "create") {
+    
     const updatedCountriesList = [
       ...countries,
       {
         id: (Number(countries.at(-1)?.id) + 1).toString(),
-        ...action.payload.countyObj,
+        ...action.payload.formData,
         likes: 0,
         active: true,
       },
