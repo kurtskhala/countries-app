@@ -1,12 +1,12 @@
 import Countries from "@/pages/countries/components/list/countries";
 import Hero from "@/pages/countries/components/list/hero";
 
-const CountriesListView = () => {
+const CountriesListView = ({language, content}) => {
 
   return (
     <>
-        <Hero />
-        <Countries />
+        <Hero content={content}/>
+        <Countries language={language} content={content}/>
     </>
   )
 }

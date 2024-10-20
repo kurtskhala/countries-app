@@ -1,7 +1,6 @@
 import styles from "./CountryInfo.module.css";
 
-const CountryInfo = ({countryInfo}) => {
-  console.log(countryInfo);
+const CountryInfo = ({content, countryInfo}) => {
   
   return (
     <div className={styles.countryInfo}>
@@ -14,8 +13,8 @@ const CountryInfo = ({countryInfo}) => {
           <div className={styles.countryInfoContent}>
             <h1>{countryInfo.name}</h1>
             <div className={styles.info}>
-              <p><strong>Capital:</strong> {countryInfo.capital}</p>
-              <p><strong>Population:</strong> {countryInfo.population}</p>
+              <p><strong>{content.list.capital}:</strong> {countryInfo.capital}</p>
+              <p><strong>{content.list.population}:</strong> {countryInfo.population}</p>
             </div>
           </div>
         </div>

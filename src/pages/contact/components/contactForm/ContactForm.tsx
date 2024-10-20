@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./ContactForm.module.css";
 
-const ContactForm = () => {
+const ContactForm = ({content}) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -61,7 +61,7 @@ const ContactForm = () => {
     <div className={styles.contactForm}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">სახელი:</label>
+          <label htmlFor="name">{content.form.name}:</label>
           <input
             type="text"
             id="name"
@@ -70,11 +70,11 @@ const ContactForm = () => {
             onChange={handleChange}
           />
           {formDataError.name && (
-            <span>Name is required</span>
+            <span>{content.formError.name}</span>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="surname">გვარი:</label>
+          <label htmlFor="surname">{content.form.surname}:</label>
           <input
             type="text"
             id="surname"
@@ -83,11 +83,11 @@ const ContactForm = () => {
             onChange={handleChange}
           />
           {formDataError.surname && (
-            <span>Surname is required</span>
+            <span>{content.formError.surname}</span>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">{content.form.mail}:</label>
           <input
             type="email"
             id="email"
@@ -96,11 +96,11 @@ const ContactForm = () => {
             onChange={handleChange}
           />
           {formDataError.email && (
-            <span>Mail is required</span>
+            <span>{content.formError.mail}</span>
           )}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="message">შეტყობინება:</label>
+          <label htmlFor="message">{content.form.message}:</label>
           <textarea
             id="message"
             name="message"
@@ -108,7 +108,7 @@ const ContactForm = () => {
             onChange={handleChange}
           />
           {formDataError.message && (
-            <span>Message is required</span>
+            <span>{content.formError.message}</span>
           )}
         </div>
         <button
@@ -116,7 +116,7 @@ const ContactForm = () => {
           onKeyDown={handleKayDown}
           className={styles.submitButton}
         >
-          გაგზავნა
+          {content.form.submit}
         </button>
       </form>
     </div>

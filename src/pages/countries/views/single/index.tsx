@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import CountryInfo from "@/pages/countries/components/single/CountryInfo";
 import { countries } from "@/pages/countries/static/dummy-data";
 
-const SingleCountryView = () => {
+const SingleCountryView = ({content}) => {
 
   const {id} = useParams();
 
@@ -14,7 +14,7 @@ const SingleCountryView = () => {
   
   return (
     <>
-        <CountryInfo countryInfo={countryInfo}/>
+        <CountryInfo content={content} countryInfo={countryInfo}/>
     </>
   )
 }

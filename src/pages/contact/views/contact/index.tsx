@@ -1,8 +1,8 @@
 import ContactForm from "../../components/contactForm"
 
-const ContactView = () => {
+const ContactView = ({content}) => {
   return (
-    <div><ContactForm /></div>
+    <div><ContactForm content={content}/></div>
   )
 }
 

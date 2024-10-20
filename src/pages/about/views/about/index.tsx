@@ -1,8 +1,8 @@
 import AboutDescription from '../../components/description'
 
-const AboutView = () => {
+const AboutView = ({content}) => {
   return (
-    <AboutDescription />
+    <AboutDescription content={content}/>
   )
 }
 

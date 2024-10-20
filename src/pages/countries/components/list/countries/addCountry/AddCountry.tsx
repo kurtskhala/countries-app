@@ -5,7 +5,7 @@ type AddCountryProps = {
   onCountyCreate: (formData: any) => void;
 };
 
-const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
+const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
   const [formData, setFormData] = useState({
     name: "",
     capital: "",
@@ -24,34 +24,34 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
       name: formData.name.length > 56,
       capital: !formData.capital.trim(),
       population: !formData.population.toLowerCase().endsWith("million"),
-      flag: !/^https?:\/\/.+\.(jpg|jpeg|png|gif|svg)$/i.test(formData.flag)
+      flag: !/^https?:\/\/.+\.(jpg|jpeg|png|gif|svg)$/i.test(formData.flag),
     };
 
     setFormDataError(newErrors);
-    return !Object.values(newErrors).some(error => error);
-  }
+    return !Object.values(newErrors).some((error) => error);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     if (formDataError[name]) {
-      setFormDataError(prev => ({ ...prev, [name]: false }));
+      setFormDataError((prev) => ({ ...prev, [name]: false }));
     }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       onCountyCreate(formData);
       setFormData({
         name: "",
         capital: "",
         population: "",
-        flag: ""
+        flag: "",
       });
     }
   };
@@ -59,7 +59,7 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
   return (
     <form className={styles.addCountryForm} onSubmit={handleSubmit}>
       <div className={styles.addCountryFormGroup}>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="name">{content.form.name}:</label>
         <input
           type="text"
           id="name"
@@ -68,11 +68,13 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
           onChange={handleChange}
         />
         {formDataError.name && (
-          <span className={styles.formError}>Country name must not exceed 56 characters</span>
+          <span className={styles.formError}>
+            {content.formError.name}
+          </span>
         )}
       </div>
       <div className={styles.addCountryFormGroup}>
-        <label htmlFor="surname">Capital:</label>
+        <label htmlFor="surname">{content.form.capital}:</label>
         <input
           type="text"
           id="capital"
@@ -80,10 +82,12 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
           value={formData.capital}
           onChange={handleChange}
         />
-        {formDataError.capital && <span className={styles.formError}>Capital is required</span>}
+        {formDataError.capital && (
+          <span className={styles.formError}>{content.formError.capital}</span>
+        )}
       </div>
       <div className={styles.addCountryFormGroup}>
-        <label htmlFor="email">Population:</label>
+        <label htmlFor="email">{content.form.population}:</label>
         <input
           type="text"
           id="population"
@@ -91,10 +95,14 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
           value={formData.population}
           onChange={handleChange}
         />
-        {formDataError.population && <span className={styles.formError}>Population must end with "million"</span>}
+        {formDataError.population && (
+          <span className={styles.formError}>
+            {content.formError.population}
+          </span>
+        )}
       </div>
       <div className={styles.addCountryFormGroup}>
-        <label htmlFor="message">Flag:</label>
+        <label htmlFor="message">{content.form.flag}:</label>
         <input
           type="text"
           id="flag"
@@ -102,10 +110,14 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate }) => {
           value={formData.flag}
           onChange={handleChange}
         />
-        {formDataError.flag && <span className={styles.formError}>Please enter a valid image URL</span>}
+        {formDataError.flag && (
+          <span className={styles.formError}>
+            {content.formError.flag}
+          </span>
+        )}
       </div>
       <button type="submit" className={styles.addCountryFormsubmitButton}>
-        Add Country
+        {content.form.button}
       </button>
     </form>
   );

@@ -10,6 +10,8 @@ type ContentProps = {
 };
 
 const Content: React.FC<ContentProps> = ({
+  language,
+  content,
   capital,
   population,
   id,
@@ -18,21 +20,21 @@ const Content: React.FC<ContentProps> = ({
   return (
     <>
       <p className={styles.countryInfo}>
-        <strong>Capital:</strong> {capital}
+        <strong>{content.list.capital}:</strong> {capital}
       </p>
       <p className={styles.countryInfo}>
-        <strong>Population:</strong> {population}
+        <strong>{content.list.population}:</strong> {population}
       </p>
       <div className={styles.countryInfoButtons}>
-        <Link className={styles.countryInfoReadMore} to={`/countries/${id}`}>
-          <p>Read More</p>
+        <Link className={styles.countryInfoReadMore} to={`${language}/countries/${id}`}>
+          <p>{content.list.readMore}</p>
         </Link>
 
         <button
           onClick={() => onCountryDelete(id)}
           className={styles.coutryDelete}
         >
-          Delete
+          {content.list.delete}
         </button>
       </div>
     </>

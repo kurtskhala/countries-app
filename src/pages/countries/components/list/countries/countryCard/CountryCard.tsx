@@ -7,7 +7,7 @@ type Children = {
   onCountryDelete: any;
 };
 
-const CountryCard: React.FC<Children> = ({ children, active, id, onCountryDelete}) => {
+const CountryCard: React.FC<Children> = ({content, children, active, id, onCountryDelete}) => {
   return (
     <div
       className={`${styles.appCountryCard} ${
@@ -17,10 +17,10 @@ const CountryCard: React.FC<Children> = ({ children, active, id, onCountryDelete
       {!active && (
         <div className={styles.appCountryCardDeleteedContainer}>
           <span className={styles.appCountryCardDeleteedContainerText}>
-            Deleted
+            {content.list.deleted}
           </span>
           <button onClick={() => onCountryDelete(id)} className={styles.appCountryCardDeleteedContainerButton}>
-            activate
+            {content.list.activate}
           </button>
         </div>
       )}
