@@ -1,5 +1,5 @@
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import DefaultLayout from "./layouts/default";
 import AboutView from "./pages/about/views/about";
 import SingleCountryView from "./pages/countries/views/single";
@@ -40,7 +40,7 @@ function App() {
             <Route
               path={`/${language}/countries/:id`}
               element={
-                <SingleCountryView content={selectedLanguage.countries} />
+                <SingleCountryView language={language} content={selectedLanguage.countries} />
               }
             />
             <Route

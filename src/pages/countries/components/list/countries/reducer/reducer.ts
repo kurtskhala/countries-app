@@ -40,7 +40,7 @@ export const countriesReducer = (
     return updatedCountriesList;
   }
 
-  if (action.type === "create") {
+  if (action.type === "create") {    
     
     const updatedCountriesList = [
       ...countries,

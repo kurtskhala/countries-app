@@ -3,11 +3,15 @@ import {
   Link,
   NavLink,
   NavLinkRenderProps,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 
-const Header: React.FC = ({ language, setLanguage, content }) => {
+const Header: React.FC = ({ language, content }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname.slice(4);
+  
   const handleActiveNav = (props: NavLinkRenderProps) => {
     const { isActive } = props;
     return isActive
@@ -16,8 +20,7 @@ const Header: React.FC = ({ language, setLanguage, content }) => {
   };
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-    navigate(`/${e.target.value}`);
+    navigate(`/${e.target.value}/${path}`);
   };
 
   return (

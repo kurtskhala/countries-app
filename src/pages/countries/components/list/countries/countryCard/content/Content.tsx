@@ -26,7 +26,7 @@ const Content: React.FC<ContentProps> = ({
         <strong>{content.list.population}:</strong> {population}
       </p>
       <div className={styles.countryInfoButtons}>
-        <Link className={styles.countryInfoReadMore} to={`${language}/countries/${id}`}>
+        <Link className={styles.countryInfoReadMore} to={`${id}`}>
           <p>{content.list.readMore}</p>
         </Link>
 

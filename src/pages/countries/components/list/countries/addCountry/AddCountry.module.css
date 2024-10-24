@@ -24,3 +24,10 @@
     color: red;
     font-size: 12px;
 }
+
+.addCountryFormGroupContainer {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}

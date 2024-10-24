@@ -11,7 +11,7 @@ import { initialState } from "./reducer/state";
 import SortButtons from "./sortButtons";
 import AddCountry from "./addCountry";
 
-const Countries: React.FC = ({language, content}) => {
+const Countries: React.FC = ({ language, content }) => {
   const [countries, dispatch] = useReducer(countriesReducer, initialState);
 
   const handleLikeButton = (id: string) => {
@@ -44,14 +44,20 @@ const Countries: React.FC = ({language, content}) => {
           .sort((a, b) => b.active - a.active)
           .map((country) => {
             return (
-              <CountryCard content={content} id={country.id} onCountryDelete={handleDeleteCountry} active={country.active} key={country.id}>
-                <Image flag={country.flag} name={country.name} />
-                <Details renderHeader={<Header name={country.name} />}>
+              <CountryCard
+                content={content}
+                id={country.id}
+                onCountryDelete={handleDeleteCountry}
+                active={country.active}
+                key={country.id}
+              >
+                <Image flag={country.flag} name={country.name[language]} />
+                <Details renderHeader={<Header name={country.name[language]} />}>
                   <Content
                     language={language}
                     content={content}
-                    capital={country.capital}
-                    population={country.population}
+                    capital={country.capital[language]}
+                    population={country.population[language]}
                     id={country.id}
                     onCountryDelete={handleDeleteCountry}
                   />

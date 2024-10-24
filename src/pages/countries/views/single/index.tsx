@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import CountryInfo from "@/pages/countries/components/single/CountryInfo";
-import { countries } from "@/pages/countries/static/dummy-data";
+import { countriesReducer } from "../../components/list/countries/reducer/reducer";
+import { useReducer } from "react";
+import { initialState } from "../../components/list/countries/reducer/state";
 
-const SingleCountryView = ({content}) => {
-
+const SingleCountryView = ({language, content}) => {
+  const [countries] = useReducer(countriesReducer, initialState);
   const {id} = useParams();
-
-  const countryInfo = countries.find((country) => country.id === id);
+  const countryInfo = countries.find((country) => country.id === id);  
 
   if(!countryInfo) {
     return <div>Country Not Found</div>
@@ -14,7 +15,7 @@ const SingleCountryView = ({content}) => {
   
   return (
     <>
-        <CountryInfo content={content} countryInfo={countryInfo}/>
+        <CountryInfo language={language} content={content} countryInfo={countryInfo}/>
     </>
   )
 }
