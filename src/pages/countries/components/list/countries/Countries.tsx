@@ -10,8 +10,10 @@ import { countriesReducer } from "./reducer/reducer";
 import { initialState } from "./reducer/state";
 import SortButtons from "./sortButtons";
 import AddCountry from "./addCountry";
+import { CountyFormData } from "@/pages/countries/types";
+import { Countries } from "@/language/language";
 
-const Countries: React.FC = ({ language, content }) => {
+const CountriesComp: React.FC<{language: "en"| "ka", content: Countries}> = ({ language, content }) => {
   const [countries, dispatch] = useReducer(countriesReducer, initialState);
 
   const handleLikeButton = (id: string) => {
@@ -23,11 +25,11 @@ const Countries: React.FC = ({ language, content }) => {
     });
   };
 
-  const handleSortButton = (sortType: "asc" | "desc" | "normal") => {
+  const handleSortButton = (sortType: "asc" | "desc" | "default") => {
     dispatch({ type: "sort", payload: { sortType } });
   };
 
-  const handleCreateCounty = (formData: any) => {
+  const handleCreateCounty = (formData: CountyFormData) => {
     dispatch({ type: "create", payload: { formData } });
   };
 
@@ -41,7 +43,7 @@ const Countries: React.FC = ({ language, content }) => {
       <AddCountry content={content} onCountyCreate={handleCreateCounty} />
       <div className={styles.appCountries}>
         {countries
-          .sort((a, b) => b.active - a.active)
+          .sort((a, b) => Number(b.active) - Number(a.active))
           .map((country) => {
             return (
               <CountryCard
@@ -52,9 +54,10 @@ const Countries: React.FC = ({ language, content }) => {
                 key={country.id}
               >
                 <Image flag={country.flag} name={country.name[language]} />
-                <Details renderHeader={<Header name={country.name[language]} />}>
+                <Details
+                  renderHeader={<Header name={country.name[language]} />}
+                >
                   <Content
-                    language={language}
                     content={content}
                     capital={country.capital[language]}
                     population={country.population[language]}
@@ -74,4 +77,4 @@ const Countries: React.FC = ({ language, content }) => {
   );
 };
 
-export default Countries;
+export default CountriesComp;

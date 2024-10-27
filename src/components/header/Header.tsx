@@ -1,4 +1,6 @@
 import styles from "#/header/HeaderStyles.module.css";
+import { Header as HeaderTypes } from "@/language/language";
+import { ChangeEvent } from "react";
 import {
   Link,
   NavLink,
@@ -7,11 +9,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-const Header: React.FC = ({ language, content }) => {
+const Header: React.FC<{language: string, content: HeaderTypes} > = ({ language, content }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname.slice(4);
-  
+
   const handleActiveNav = (props: NavLinkRenderProps) => {
     const { isActive } = props;
     return isActive
@@ -19,7 +21,7 @@ const Header: React.FC = ({ language, content }) => {
       : styles["appHeaderNavItem"];
   };
 
-  const handleLanguageChange = (e) => {
+  const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     navigate(`/${e.target.value}/${path}`);
   };
 

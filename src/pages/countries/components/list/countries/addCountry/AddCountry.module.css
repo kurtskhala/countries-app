@@ -1,33 +1,33 @@
 .addCountryForm {
-    max-width: 400px;
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: start;
+  max-width: 400px;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: start;
 }
 
 .addCountryFormGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
 }
 
 .addCountryFormsubmitButton {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .formError {
-    color: red;
-    font-size: 12px;
+  color: red;
+  font-size: 12px;
 }
 
 .addCountryFormGroupContainer {
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    align-items: center;
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
 }

@@ -1,4 +1,85 @@
-export const translations = {
+interface NotFound {
+  notFound: string;
+}
+
+interface Home {
+  test: string;
+}
+
+export interface Header {
+  logo: string;
+  navBar: string[];
+}
+
+export interface AboutUs {
+  header: string;
+  firstParag: string;
+  unordList: string[];
+  secondParag: string;
+}
+
+export interface CountriesForm {
+  name: string;
+  capital: string;
+  population: string;
+  flag: string;
+  button: string;
+}
+
+export interface CountriesFormError {
+  name: string;
+  capital: string;
+  population: string;
+  flag: string;
+}
+
+export interface CountriesList {
+  capital: string;
+  population: string;
+  readMore: string;
+  delete: string;
+  deleted: string;
+  activate: string;
+}
+
+export interface Countries {
+  main: string;
+  sort: string[];
+  form: CountriesForm;
+  formError: CountriesFormError;
+  list: CountriesList;
+}
+
+export interface ContactForm {
+  name: string;
+  surname: string;
+  mail: string;
+  message: string;
+  submit: string;
+}
+
+interface ContactFormError {
+  name: string;
+  surname: string;
+  mail: string;
+  message: string;
+}
+
+export interface Contact {
+  form: ContactForm;
+  formError: ContactFormError;
+}
+
+interface Translation {
+  notFound: NotFound;
+  home: Home;
+  header: Header;
+  aboutUs: AboutUs;
+  countries: Countries;
+  contact: Contact;
+}
+
+export const translations: Record<"en" | "ka", Translation> = {
   en: {
     notFound: {
       notFound: "Not Found",

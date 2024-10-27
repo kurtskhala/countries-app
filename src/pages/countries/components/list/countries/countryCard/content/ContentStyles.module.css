@@ -1,43 +1,43 @@
 .countryInfo {
-    font-size: 16px;
-    color: #555;
-    margin: 4px 0;
+  font-size: 16px;
+  color: #555;
+  margin: 4px 0;
 }
 
 .countryInfoReadMore {
-    margin: 4px 0;
-    text-decoration: none;
-    cursor: pointer;
+  margin: 4px 0;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .countryInfoReadMore:hover {
-    color: blue;
-    text-decoration: underline;
+  color: blue;
+  text-decoration: underline;
 }
 
-.countryInfoReadMore p{
-    margin: 0;
+.countryInfoReadMore p {
+  margin: 0;
 }
 
 .countryInfoButtons {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .coutryDelete {
-    border: none;
-    background-color: transparent;
-    color: red;
-    cursor: pointer;
-    transition: all 0.2s;
+  border: none;
+  background-color: transparent;
+  color: red;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .coutryDelete:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .coutryActivate {
-    color: white;
-    font-size: 15px;
-    font-weight: 300;
+  color: white;
+  font-size: 15px;
+  font-weight: 300;
 }

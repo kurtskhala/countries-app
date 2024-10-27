@@ -1,1 +1,1 @@
-export {default} from "./CountryInfo";
+export { default } from "./CountryInfo";

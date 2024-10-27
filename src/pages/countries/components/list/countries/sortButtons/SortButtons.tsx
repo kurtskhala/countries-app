@@ -1,6 +1,14 @@
+import { Countries } from "@/language/language";
 import styles from "./SortButtons.module.css";
 
-const SortButtons = ({handleSortButton, content}) => {
+type SortType = "asc" | "desc" | "default";
+
+interface SortButtonsProps {
+  handleSortButton: (sortType: SortType) => void;
+  content: Countries;
+}
+
+const SortButtons: React.FC<SortButtonsProps> = ({ handleSortButton, content }) => {
   return (
     <div className={styles.sortButtons}>
       <button
@@ -17,7 +25,7 @@ const SortButtons = ({handleSortButton, content}) => {
       </button>
       <button
         className={styles.sortButton}
-        onClick={() => handleSortButton("normal")}
+        onClick={() => handleSortButton("default")}
       >
         {content.sort[2]}
       </button>

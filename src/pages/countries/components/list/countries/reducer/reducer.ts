@@ -1,19 +1,39 @@
-type CountriesInitialState = {
+interface Country {
   id: string;
-  name: string;
-  capital: string;
-  population: string;
-  flags: string;
+  name: {
+    en: string;
+    ka: string;
+  };
+  capital: {
+    en: string;
+    ka: string;
+  };
+  population: {
+    en: string;
+    ka: string;
+  };
+  flag: string;
   likes: number;
   active: boolean;
-}[];
+}
+
+type CountriesInitialState = Country[];
+
+type CountriesAction =
+  | { type: "like"; payload: { id: string } }
+  | { type: "sort"; payload: { sortType: "asc" | "desc" | "default" } }
+  | {
+      type: "create";
+      payload: { formData: Omit<Country, "id" | "likes" | "active"> };
+    }
+  | { type: "delete"; payload: { id: string } };
 
 export const countriesReducer = (
   countries: CountriesInitialState,
-  action: any
+  action: CountriesAction,
 ) => {
   if (action.type === "like") {
-    const update = countries.map((country: any) => {
+    const update = countries.map((country: Country) => {
       if (country.id === action.payload.id) {
         return { ...country, likes: country.likes + 1 };
       }
@@ -25,14 +45,16 @@ export const countriesReducer = (
 
   if (action.type === "sort") {
     const activeCountries = [...countries.filter((country) => country.active)];
-    const deletedCountries = [...countries.filter((country) => !country.active)];
+    const deletedCountries = [
+      ...countries.filter((country) => !country.active),
+    ];
 
     const sortedCountriesList = activeCountries.sort((a, b) => {
       return action.payload.sortType === "asc"
         ? a.likes - b.likes
         : action.payload.sortType === "desc"
-        ? b.likes - a.likes
-        : Number(a.id) - Number(b.id);
+          ? b.likes - a.likes
+          : Number(a.id) - Number(b.id);
     });
 
     const updatedCountriesList = [...sortedCountriesList, ...deletedCountries];
@@ -40,8 +62,7 @@ export const countriesReducer = (
     return updatedCountriesList;
   }
 
-  if (action.type === "create") {    
-    
+  if (action.type === "create") {
     const updatedCountriesList = [
       ...countries,
       {
@@ -56,7 +77,7 @@ export const countriesReducer = (
   }
 
   if (action.type === "delete") {
-    const updatedCountriesList = countries.map((country: any) => {
+    const updatedCountriesList = countries.map((country: Country) => {
       if (country.id === action.payload.id) {
         return { ...country, active: !country.active };
       }

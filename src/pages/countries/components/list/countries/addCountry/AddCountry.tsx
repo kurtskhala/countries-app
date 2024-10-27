@@ -1,12 +1,46 @@
 import { FormEvent, useState } from "react";
 import styles from "./AddCountry.module.css";
+import { Countries } from "@/language/language";
 
 type AddCountryProps = {
-  onCountyCreate: (formData: any) => void;
+  onCountyCreate: (formData: CountyFormData) => void;
+  content: Countries;
 };
 
+interface FormDataError {
+  name: {
+    en: boolean;
+    ka: boolean;
+  };
+  capital: {
+    en: boolean;
+    ka: boolean;
+  };
+  population: {
+    en: boolean;
+    ka: boolean;
+  };
+  flag: boolean;
+}
+
+interface CountyFormData {
+  name: {
+    en: string;
+    ka: string;
+  };
+  capital: {
+    en: string;
+    ka: string;
+  };
+  population: {
+    en: string;
+    ka: string;
+  };
+  flag: string;
+}
+
 const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CountyFormData>({
     name: {
       en: "",
       ka: "",
@@ -21,7 +55,7 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
     },
     flag: "",
   });
-  const [formDataError, setFormDataError] = useState({
+  const [formDataError, setFormDataError] = useState<FormDataError>({
     name: {
       en: false,
       ka: false,
@@ -53,43 +87,54 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
       },
       flag: !formData.flag,
     };
-  
+
     setFormDataError(newErrors);
-  
-    const hasErrors = Object.entries(newErrors).some(([key, value]) => {
-      if (typeof value === 'boolean') {
+
+    const hasErrors = Object.entries(newErrors).some(([, value]) => {
+      if (typeof value === "boolean") {
         return value;
       }
-      return Object.values(value).some(error => error);
+      return Object.values(value).some((error) => error);
     });
-  
+
     return !hasErrors;
   };
-  
 
- const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  const { name, value } = e.target;
-  const [field, language] = name.split("_");
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    const [field, language] = name.split("_") as [
+      keyof CountyFormData,
+      "en" | "ka",
+    ];
 
-  setFormData((prev) => ({
-    ...prev,
-    [field]: { ...prev[field], [language]: value },
-  }));
-
-  if (formDataError[field]?.[language]) {
-    setFormDataError((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: {
-        ...prev[field],
-        [language]: false,
+        ...(prev[field] as Record<string, string>),
+        [language]: value,
       },
     }));
-  }
-};
 
-  const handleFileChange = (e) => {
+    const currentFieldError = formDataError[field];
+
+    if (
+      typeof currentFieldError === "object" &&
+      currentFieldError !== null &&
+      currentFieldError[language]
+    ) {
+      setFormDataError((prev) => ({
+        ...prev,
+        [field]: {
+          ...(prev[field] as Record<string, boolean>), // Ensure this is a Record of booleans
+          [language]: false,
+        },
+      }));
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5242880) {
@@ -184,9 +229,7 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
             onChange={handleChange}
           />
           {formDataError.capital["en"] && (
-            <span className={styles.formError}>
-              Capital is required
-            </span>
+            <span className={styles.formError}>Capital is required</span>
           )}
         </div>
         <div className={styles.addCountryFormGroup}>
@@ -247,10 +290,8 @@ const AddCountry: React.FC<AddCountryProps> = ({ onCountyCreate, content }) => {
           onChange={handleFileChange}
         />
         {formDataError.flag && (
-            <span className={styles.formError}>
-              enter flag
-            </span>
-          )}
+          <span className={styles.formError}>enter flag</span>
+        )}
       </div>
       <button type="submit" className={styles.addCountryFormsubmitButton}>
         {content.form.button}

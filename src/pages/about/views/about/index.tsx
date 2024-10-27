@@ -1,9 +1,8 @@
-import AboutDescription from '../../components/description'
+import { AboutUs } from "@/language/language";
+import AboutDescription from "../../components/description";
 
-const AboutView = ({content}) => {
-  return (
-    <AboutDescription content={content}/>
-  )
-}
+const AboutView: React.FC<{content: AboutUs}> = ({ content }) => {
+  return <AboutDescription content={content} />;
+};
 
-export default AboutView
+export default AboutView;

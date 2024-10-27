@@ -1,1 +1,1 @@
-export {default} from "./CountryCard";
+export { default } from "./CountryCard";

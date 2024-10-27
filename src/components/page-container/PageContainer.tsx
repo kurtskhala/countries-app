@@ -1,7 +1,5 @@
-const PageContainer: React.FC<React.PropsWithChildren> = ({children}) => {
-  return (
-    <>{children}</>
-  )
-}
+const PageContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <>{children}</>;
+};
 
-export default PageContainer
+export default PageContainer;

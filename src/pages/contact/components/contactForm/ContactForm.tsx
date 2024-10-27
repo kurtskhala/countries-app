@@ -1,7 +1,17 @@
 import { useState } from "react";
 import styles from "./ContactForm.module.css";
+import { Contact as ContactTypes } from "@/language/language";
+import React from 'react';
 
-const ContactForm = ({content}) => {
+interface FormDataError {
+  name: boolean;
+  surname: boolean;
+  email: boolean;
+  message: boolean;
+  [key: string]: boolean;
+}
+
+const ContactForm: React.FC<{content: ContactTypes}> = ({ content }) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -9,7 +19,7 @@ const ContactForm = ({content}) => {
     message: "",
   });
 
-  const [formDataError, setFormDataError] = useState({
+  const [formDataError, setFormDataError] = useState<FormDataError>({
     name: false,
     surname: false,
     email: false,
@@ -29,7 +39,7 @@ const ContactForm = ({content}) => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -51,8 +61,8 @@ const ContactForm = ({content}) => {
     }
   };
 
-  function handleKayDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "enter") {
+  function handleKayDown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    if (e.key === "Enter") {
       handleSubmit(e);
     }
   }
@@ -69,9 +79,7 @@ const ContactForm = ({content}) => {
             value={formData.name}
             onChange={handleChange}
           />
-          {formDataError.name && (
-            <span>{content.formError.name}</span>
-          )}
+          {formDataError.name && <span>{content.formError.name}</span>}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="surname">{content.form.surname}:</label>
@@ -82,9 +90,7 @@ const ContactForm = ({content}) => {
             value={formData.surname}
             onChange={handleChange}
           />
-          {formDataError.surname && (
-            <span>{content.formError.surname}</span>
-          )}
+          {formDataError.surname && <span>{content.formError.surname}</span>}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="email">{content.form.mail}:</label>
@@ -95,9 +101,7 @@ const ContactForm = ({content}) => {
             value={formData.email}
             onChange={handleChange}
           />
-          {formDataError.email && (
-            <span>{content.formError.mail}</span>
-          )}
+          {formDataError.email && <span>{content.formError.mail}</span>}
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="message">{content.form.message}:</label>
@@ -107,9 +111,7 @@ const ContactForm = ({content}) => {
             value={formData.message}
             onChange={handleChange}
           />
-          {formDataError.message && (
-            <span>{content.formError.message}</span>
-          )}
+          {formDataError.message && <span>{content.formError.message}</span>}
         </div>
         <button
           type="submit"

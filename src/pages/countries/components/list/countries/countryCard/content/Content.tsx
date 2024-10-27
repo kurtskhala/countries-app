@@ -1,16 +1,17 @@
 import React from "react";
 import styles from "./ContentStyles.module.css";
 import { Link } from "react-router-dom";
+import { Countries } from "@/language/language";
 
 type ContentProps = {
+  content: Countries;
   capital: string;
   population: string;
   id: string;
-  onCountryDelete: any;
+  onCountryDelete: (arg: string) => void;
 };
 
 const Content: React.FC<ContentProps> = ({
-  language,
   content,
   capital,
   population,

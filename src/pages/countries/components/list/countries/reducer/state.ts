@@ -1,4 +1,23 @@
-export const initialState = [
+export interface Country {
+  id: string;
+  name: {
+    en: string;
+    ka: string;
+  };
+  capital: {
+    en: string;
+    ka: string;
+  };
+  population: {
+    en: string;
+    ka: string;
+  };
+  flag: string;
+  likes: number;
+  active: boolean;
+}
+
+export const initialState: Country[] = [
   {
     id: "1",
     name: {
