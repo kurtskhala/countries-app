@@ -8,7 +8,10 @@ interface SortButtonsProps {
   content: Countries;
 }
 
-const SortButtons: React.FC<SortButtonsProps> = ({ handleSortButton, content }) => {
+const SortButtons: React.FC<SortButtonsProps> = ({
+  handleSortButton,
+  content,
+}) => {
   return (
     <div className={styles.sortButtons}>
       <button

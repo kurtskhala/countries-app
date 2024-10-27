@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./ContactForm.module.css";
 import { Contact as ContactTypes } from "@/language/language";
-import React from 'react';
+import React from "react";
 
 interface FormDataError {
   name: boolean;
@@ -11,7 +11,7 @@ interface FormDataError {
   [key: string]: boolean;
 }
 
-const ContactForm: React.FC<{content: ContactTypes}> = ({ content }) => {
+const ContactForm: React.FC<{ content: ContactTypes }> = ({ content }) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",

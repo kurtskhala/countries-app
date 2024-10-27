@@ -1,7 +1,8 @@
 import { AboutUs } from "@/language/language";
 import styles from "./AboutDescriptionStyles.module.css";
+import React from "react";
 
-const AboutDescription: React.FC<{content: AboutUs}> = ({ content }) => {
+const AboutDescription: React.FC<{ content: AboutUs }> = ({ content }) => {
   return (
     <section className={styles.appAboutSection}>
       <h1 className={styles.appAboutSectionTitle}>{content.header}</h1>

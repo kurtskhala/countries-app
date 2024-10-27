@@ -2,7 +2,11 @@ import { Countries } from "@/language/language";
 import styles from "./CountryInfo.module.css";
 import { Country } from "../../list/countries/reducer/state";
 
-const CountryInfo: React.FC<{language: "en" | "ka", content: Countries, countryInfo: Country}> = ({ language, content, countryInfo }) => {
+const CountryInfo: React.FC<{
+  language: "en" | "ka";
+  content: Countries;
+  countryInfo: Country;
+}> = ({ language, content, countryInfo }) => {
   return (
     <div className={styles.countryInfo}>
       <div className={styles.countryInfoCard}>

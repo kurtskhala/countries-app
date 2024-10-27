@@ -11,7 +11,6 @@ const LazyCountries = lazy(() => import("@/pages/countries/views/list"));
 type AvailableLanguages = keyof typeof translations;
 
 function App() {
-
   const [language, setLanguage] = useState<AvailableLanguages>("en");
   const selectedLanguage = translations[language];
 

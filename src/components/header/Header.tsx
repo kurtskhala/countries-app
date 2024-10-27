@@ -9,7 +9,10 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-const Header: React.FC<{language: string, content: HeaderTypes} > = ({ language, content }) => {
+const Header: React.FC<{ language: string; content: HeaderTypes }> = ({
+  language,
+  content,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname.slice(4);

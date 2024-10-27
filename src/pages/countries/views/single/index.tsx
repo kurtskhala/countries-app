@@ -5,10 +5,10 @@ import { useReducer } from "react";
 import { initialState } from "../../components/list/countries/reducer/state";
 import { Countries } from "@/language/language";
 
-const SingleCountryView: React.FC<{ language: "en" | "ka"; content: Countries }> = ({
-  language,
-  content,
-}) => {
+const SingleCountryView: React.FC<{
+  language: "en" | "ka";
+  content: Countries;
+}> = ({ language, content }) => {
   const [countries] = useReducer(countriesReducer, initialState);
   const { id } = useParams();
   const countryInfo = countries.find((country) => country.id === id);

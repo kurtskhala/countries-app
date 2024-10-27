@@ -13,7 +13,10 @@ import AddCountry from "./addCountry";
 import { CountyFormData } from "@/pages/countries/types";
 import { Countries } from "@/language/language";
 
-const CountriesComp: React.FC<{language: "en"| "ka", content: Countries}> = ({ language, content }) => {
+const CountriesComp: React.FC<{
+  language: "en" | "ka";
+  content: Countries;
+}> = ({ language, content }) => {
   const [countries, dispatch] = useReducer(countriesReducer, initialState);
 
   const handleLikeButton = (id: string) => {
