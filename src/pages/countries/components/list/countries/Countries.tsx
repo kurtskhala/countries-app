@@ -12,6 +12,7 @@ import SortButtons from "./sortButtons";
 import AddCountry from "./addCountry";
 import { CountyFormData } from "@/pages/countries/types";
 import { Countries } from "@/language/language";
+import InputOTP from "./inputOTP";
 
 const CountriesComp: React.FC<{
   language: "en" | "ka";
@@ -43,7 +44,10 @@ const CountriesComp: React.FC<{
   return (
     <div className={styles.appCountriesContainer}>
       <SortButtons content={content} handleSortButton={handleSortButton} />
-      <AddCountry content={content} onCountyCreate={handleCreateCounty} />
+      <div className={styles.appCountriesForms}>
+        <AddCountry content={content} onCountyCreate={handleCreateCounty} />
+        <InputOTP length={6}/>
+      </div>
       <div className={styles.appCountries}>
         {countries
           .sort((a, b) => Number(b.active) - Number(a.active))

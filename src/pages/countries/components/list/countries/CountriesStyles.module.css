@@ -9,3 +9,8 @@
   flex-wrap: wrap;
   gap: 40px;
 }
+
+.appCountriesForms {
+  display: flex;
+  flex-wrap: wrap;
+}
