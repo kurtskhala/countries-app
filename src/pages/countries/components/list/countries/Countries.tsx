@@ -46,7 +46,7 @@ const CountriesComp: React.FC<{
       <SortButtons content={content} handleSortButton={handleSortButton} />
       <div className={styles.appCountriesForms}>
         <AddCountry content={content} onCountyCreate={handleCreateCounty} />
-        <InputOTP length={6}/>
+        <InputOTP length={6} />
       </div>
       <div className={styles.appCountries}>
         {countries
