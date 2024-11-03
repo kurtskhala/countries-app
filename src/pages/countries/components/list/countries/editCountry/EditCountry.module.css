@@ -1,41 +1,40 @@
 .editCountry {
-    position: absolute;
-    height: 200px;
-    bottom: -210px;
-    background-color: white;
+  position: absolute;
+  height: 200px;
+  bottom: -210px;
+  background-color: white;
 }
 
 .addCountryForm {
-    max-width: 400px;
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: start;
-  }
-  
-  .addCountryFormGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    width: 100%;
-  }
-  
-  .addCountryFormsubmitButton {
-    cursor: pointer;
-  }
-  
-  .formError {
-    color: red;
-    font-size: 12px;
-  }
-  
-  .addCountryFormGroupContainer {
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    align-items: center;
-  }
-  
+  max-width: 400px;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: start;
+}
+
+.addCountryFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.addCountryFormsubmitButton {
+  cursor: pointer;
+}
+
+.formError {
+  color: red;
+  font-size: 12px;
+}
+
+.addCountryFormGroupContainer {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+}

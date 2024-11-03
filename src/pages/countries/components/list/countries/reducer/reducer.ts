@@ -63,7 +63,7 @@ export const countriesReducer = (
     });
 
     const updatedCountriesList = [...sortedCountriesList, ...deletedCountries];
-    
+
     return updatedCountriesList;
   }
 

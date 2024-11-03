@@ -28,7 +28,7 @@ const SingleCountryView: React.FC<{
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
 
   if (!country) {
     return <div>Country Not Found</div>;

@@ -78,7 +78,7 @@ const CountriesComp: React.FC<{
         });
       })
       .catch((error) => console.error("Edit error:", error));
-  }
+  };
 
   const handleDeleteCountry = (id: string) => {
     axios
@@ -107,7 +107,12 @@ const CountriesComp: React.FC<{
               .sort((a, b) => Number(b.active) - Number(a.active))
               .map((country) => {
                 return (
-                  <CountryCard onEdit={handleEditCountry} country={country} content={content} key={country.id}>
+                  <CountryCard
+                    onEdit={handleEditCountry}
+                    country={country}
+                    content={content}
+                    key={country.id}
+                  >
                     <Image flag={country.flag} name={country.name[language]} />
                     <Details
                       renderHeader={<Header name={country.name[language]} />}
