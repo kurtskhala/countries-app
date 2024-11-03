@@ -1,41 +1,41 @@
+import { useState } from "react";
 import { Countries } from "@/language/language";
+import EditCountry from "../editCountry";
 import styles from "./CountryCardStyles.module.css";
+import { Country } from "../reducer/state";
 
 type Children = {
+  onEdit: (updatedData: Country, id: string) => void;
+  country: Country;
   content: Countries;
   children: React.ReactNode;
-  active: boolean;
-  id: string;
-  onCountryDelete: (arg: string) => void;
 };
 
 const CountryCard: React.FC<Children> = ({
+  onEdit,
+  country,
   content,
   children,
-  active,
-  id,
-  onCountryDelete,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
-    <div
-      className={`${styles.appCountryCard} ${
-        !active && styles.appCountryCardDeleted
-      }`}
-    >
-      {!active && (
-        <div className={styles.appCountryCardDeleteedContainer}>
-          <span className={styles.appCountryCardDeleteedContainerText}>
-            {content.list.deleted}
-          </span>
-          <button
-            onClick={() => onCountryDelete(id)}
-            className={styles.appCountryCardDeleteedContainerButton}
-          >
-            {content.list.activate}
-          </button>
-        </div>
-      )}
+    <div className={`${styles.appCountryCard}`}>
+      <button
+        className={styles.coutryEdit}
+        onClick={() => setIsEditing((prev) => !prev)}
+      >
+        edit
+      </button>
       {children}
+      {isEditing && (
+        <EditCountry
+          onEdit={onEdit}
+          setIsEditing={setIsEditing}
+          country={country}
+          content={content}
+        />
+      )}
     </div>
   );
 };

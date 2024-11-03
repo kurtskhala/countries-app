@@ -20,18 +20,23 @@ interface Country {
 type CountriesInitialState = Country[];
 
 type CountriesAction =
+  | { type: "initialize"; payload: { data: Country[] } }
   | { type: "like"; payload: { id: string } }
   | { type: "sort"; payload: { sortType: "asc" | "desc" | "default" } }
   | {
       type: "create";
-      payload: { formData: Omit<Country, "id" | "likes" | "active"> };
+      payload: { formData: Country };
     }
-  | { type: "delete"; payload: { id: string } };
+  | { type: "delete"; payload: { id: string } }
+  | { type: "edit"; payload: { data: Country; id: string } };
 
 export const countriesReducer = (
   countries: CountriesInitialState,
   action: CountriesAction,
 ) => {
+  if (action.type === "initialize") {
+    return action.payload.data;
+  }
   if (action.type === "like") {
     const update = countries.map((country: Country) => {
       if (country.id === action.payload.id) {
@@ -58,33 +63,22 @@ export const countriesReducer = (
     });
 
     const updatedCountriesList = [...sortedCountriesList, ...deletedCountries];
-
+    
     return updatedCountriesList;
   }
 
   if (action.type === "create") {
-    const updatedCountriesList = [
-      ...countries,
-      {
-        id: (Number(countries.at(-1)?.id) + 1).toString(),
-        ...action.payload.formData,
-        likes: 0,
-        active: true,
-      },
-    ];
-
-    return updatedCountriesList;
+    return [...countries, action.payload.formData];
   }
 
   if (action.type === "delete") {
-    const updatedCountriesList = countries.map((country: Country) => {
-      if (country.id === action.payload.id) {
-        return { ...country, active: !country.active };
-      }
-      return { ...country };
-    });
+    return countries.filter((country) => country.id !== action.payload.id);
+  }
 
-    return updatedCountriesList;
+  if (action.type === "edit") {
+    return countries.map((country) =>
+      country.id === action.payload.id ? action.payload.data : country,
+    );
   }
 
   return countries;

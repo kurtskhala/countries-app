@@ -6,29 +6,36 @@ const CountryInfo: React.FC<{
   language: "en" | "ka";
   content: Countries;
   countryInfo: Country;
-}> = ({ language, content, countryInfo }) => {
+  isError: boolean;
+  isLoading: boolean;
+}> = ({ language, content, countryInfo, isError, isLoading }) => {
   return (
     <div className={styles.countryInfo}>
-      <div className={styles.countryInfoCard}>
-        <img
-          src={countryInfo.flag}
-          alt={`Flag of ${countryInfo.name[language]}`}
-          className={styles.countryInfoflag}
-        />
-        <div className={styles.countryInfoContent}>
-          <h1>{countryInfo.name[language]}</h1>
-          <div className={styles.info}>
-            <p>
-              <strong>{content.list.capital}:</strong>{" "}
-              {countryInfo.capital[language]}
-            </p>
-            <p>
-              <strong>{content.list.population}:</strong>{" "}
-              {countryInfo.population[language]}
-            </p>
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <div className={styles.countryInfoCard}>
+          <img
+            src={countryInfo.flag}
+            alt={`Flag of ${countryInfo.name[language]}`}
+            className={styles.countryInfoflag}
+          />
+          <div className={styles.countryInfoContent}>
+            <h1>{countryInfo.name[language]}</h1>
+            <div className={styles.info}>
+              <p>
+                <strong>{content.list.capital}:</strong>{" "}
+                {countryInfo.capital[language]}
+              </p>
+              <p>
+                <strong>{content.list.population}:</strong>{" "}
+                {countryInfo.population[language]}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {isError && "ერორი მოხდა"}
     </div>
   );
 };
