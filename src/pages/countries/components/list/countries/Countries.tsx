@@ -4,7 +4,7 @@ import Header from "@/pages/countries/components/list/countries/countryCard/head
 import Image from "@/pages/countries/components/list/countries/countryCard/image";
 import CountryCard from "@/pages/countries/components/list/countries/countryCard";
 import styles from "./CountriesStyles.module.css";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import Likes from "./countryCard/likes";
 import { countriesReducer } from "./reducer/reducer";
 import SortButtons from "./sortButtons";
@@ -12,31 +12,44 @@ import AddCountry from "./addCountry";
 import { CountyFormData } from "@/pages/countries/types";
 import { Countries } from "@/language/language";
 import InputOTP from "./inputOTP";
-import axios from "axios";
 import { Country } from "./reducer/state";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createCountry,
+  deleteCountry,
+  getCountries,
+  editCountry,
+} from "@/api/countries";
 
 const CountriesComp: React.FC<{
   language: "en" | "ka";
   content: Countries;
 }> = ({ language, content }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
   const [countries, dispatch] = useReducer(countriesReducer, []);
 
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["countries"],
+    queryFn: getCountries,
+    retry: 0,
+  });
+
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/countries")
-      .then((res) => {
-        dispatch({ type: "initialize", payload: { data: res.data } });
-      })
-      .catch((e) => {
-        setIsError(true);
-        console.log(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    if (data) {
+      dispatch({ type: "initialize", payload: { data } });
+    }
+  }, [data, dispatch]);
+
+  const { mutate: createCountryMutate } = useMutation({
+    mutationFn: createCountry,
+  });
+
+  const { mutate: editCountryMutate } = useMutation({
+    mutationFn: editCountry,
+  });
+
+  const { mutate: deleteCountryMutate } = useMutation({
+    mutationFn: deleteCountry,
+  });
 
   const handleLikeButton = (id: string) => {
     dispatch({
@@ -58,37 +71,35 @@ const CountriesComp: React.FC<{
       likes: 0,
       active: true,
     };
-    axios
-      .post("http://localhost:3000/countries", newCountry)
-      .then((res) => {
-        dispatch({ type: "create", payload: { formData: res.data } });
-      })
-      .catch((error) => {
-        console.error("Error adding country:", error);
-      });
+    createCountryMutate(
+      { payload: newCountry },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      },
+    );
   };
 
   const handleEditCountry = (updatedData: Country, id: string) => {
-    axios
-      .put(`http://localhost:3000/countries/${id}`, updatedData)
-      .then(() => {
-        dispatch({
-          type: "edit",
-          payload: { data: updatedData, id },
-        });
-      })
-      .catch((error) => console.error("Edit error:", error));
+    editCountryMutate(
+      { id, payload: updatedData },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      },
+    );
   };
 
-  const handleDeleteCountry = (id: string) => {
-    axios
-      .delete(`http://localhost:3000/countries/${id}`)
-      .then(() => {
-        dispatch({ type: "delete", payload: { id } });
-      })
-      .catch((error) => {
-        console.error("Error deleting country:", error);
-      });
+  const handleDeleteCountry = (id: string | number) => {
+    console.log(id);
+
+    deleteCountryMutate(id, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
   };
 
   return (

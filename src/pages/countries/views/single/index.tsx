@@ -1,36 +1,30 @@
 import { useParams } from "react-router-dom";
 import CountryInfo from "@/pages/countries/components/single/CountryInfo";
-import { useEffect, useState } from "react";
-import { Country } from "../../components/list/countries/reducer/state";
 import { Countries } from "@/language/language";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { getCountry } from "@/api/countries";
+import { Country } from "../../components/list/countries/reducer/state";
 
 const SingleCountryView: React.FC<{
   language: "en" | "ka";
   content: Countries;
 }> = ({ language, content }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [country, setCountry] = useState({} as Country);
+  const { id } = useParams<{ id: string }>();
+  const {
+    data: country,
+    isLoading,
+    isError,
+  } = useQuery<Country>({
+    queryKey: ["country", id],
+    queryFn: () => {
+      if (!id) throw new Error("Country ID not found");
+      return getCountry(id);
+    },
+    enabled: !!id,
+    retry: 0,
+  });
 
-  const { id } = useParams();
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/countries/${id}`)
-      .then((res) => {
-        setCountry(res.data);
-      })
-      .catch((e) => {
-        setIsError(true);
-        console.log(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [id]);
-
-  if (!country) {
+  if (!id || !country) {
     return <div>Country Not Found</div>;
   }
 

@@ -3,6 +3,7 @@
   height: 200px;
   bottom: -210px;
   background-color: white;
+  z-index: 10000;
 }
 
 .addCountryForm {
