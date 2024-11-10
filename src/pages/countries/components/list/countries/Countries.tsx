@@ -44,7 +44,7 @@ const CountriesComp: React.FC<{
         endpoint += "?_sort=likes";
       } else if (currentSort === "desc") {
         endpoint += "?_sort=-likes";
-      }      
+      }
       return getCountries(endpoint);
     },
     retry: 0,

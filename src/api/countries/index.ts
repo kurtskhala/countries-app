@@ -2,15 +2,15 @@ import { httpClient } from "@/api";
 import { Country } from "@/pages/countries/components/list/countries/reducer/state";
 
 export const getCountries = async (endpoint?: string): Promise<Country[]> => {
-    try {
-      const url = endpoint || "/countries";      
-      const response = await httpClient.get(url);
-      return response.data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  };
+  try {
+    const url = endpoint || "/countries";
+    const response = await httpClient.get(url);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
 
 export const getCountry = async (id: string): Promise<Country> => {
   try {
