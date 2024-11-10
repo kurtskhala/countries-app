@@ -4,9 +4,8 @@ import Header from "@/pages/countries/components/list/countries/countryCard/head
 import Image from "@/pages/countries/components/list/countries/countryCard/image";
 import CountryCard from "@/pages/countries/components/list/countries/countryCard";
 import styles from "./CountriesStyles.module.css";
-import React, { useEffect, useReducer } from "react";
+import React, { useRef, useCallback } from "react";
 import Likes from "./countryCard/likes";
-import { countriesReducer } from "./reducer/reducer";
 import SortButtons from "./sortButtons";
 import AddCountry from "./addCountry";
 import { CountyFormData } from "@/pages/countries/types";
@@ -14,6 +13,8 @@ import { Countries } from "@/language/language";
 import InputOTP from "./inputOTP";
 import { Country } from "./reducer/state";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useSearchParams } from "react-router-dom";
 import {
   createCountry,
   deleteCountry,
@@ -25,19 +26,43 @@ const CountriesComp: React.FC<{
   language: "en" | "ka";
   content: Countries;
 }> = ({ language, content }) => {
-  const [countries, dispatch] = useReducer(countriesReducer, []);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentSort = searchParams.get("sort") || "default";
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["countries"],
-    queryFn: getCountries,
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const {
+    data: countries = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["countries", currentSort],
+    queryFn: () => {
+      let endpoint = "/countries";
+      if (currentSort === "asc") {
+        endpoint += "?_sort=likes";
+      } else if (currentSort === "desc") {
+        endpoint += "?_sort=-likes";
+      }      
+      return getCountries(endpoint);
+    },
     retry: 0,
   });
 
-  useEffect(() => {
-    if (data) {
-      dispatch({ type: "initialize", payload: { data } });
-    }
-  }, [data, dispatch]);
+  const getNumColumns = useCallback(() => {
+    if (!parentRef.current) return 1;
+    const containerWidth = parentRef.current.offsetWidth;
+    const cardWidth = 320 + 40;
+    return Math.floor(containerWidth / cardWidth);
+  }, []);
+
+  const rowVirtualizer = useVirtualizer({
+    count: Math.ceil(countries.length / getNumColumns()),
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 134 + 40,
+    overscan: 2,
+  });
 
   const { mutate: createCountryMutate } = useMutation({
     mutationFn: createCountry,
@@ -52,16 +77,21 @@ const CountriesComp: React.FC<{
   });
 
   const handleLikeButton = (id: string) => {
-    dispatch({
-      type: "like",
-      payload: {
-        id,
-      },
-    });
+    const country = countries.find((c) => c.id === id);
+    if (country) {
+      editCountryMutate(
+        { id, payload: { ...country, likes: country.likes + 1 } },
+        {
+          onSuccess: () => {
+            refetch();
+          },
+        },
+      );
+    }
   };
 
   const handleSortButton = (sortType: "asc" | "desc" | "default") => {
-    dispatch({ type: "sort", payload: { sortType } });
+    setSearchParams({ sort: sortType });
   };
 
   const handleCreateCounty = (formData: CountyFormData) => {
@@ -113,36 +143,75 @@ const CountriesComp: React.FC<{
             <AddCountry content={content} onCountyCreate={handleCreateCounty} />
             <InputOTP length={6} />
           </div>
-          <div className={styles.appCountries}>
-            {countries
-              .sort((a, b) => Number(b.active) - Number(a.active))
-              .map((country) => {
+          <div
+            ref={parentRef}
+            className={styles.appCountriesWrapper}
+            style={{
+              height: "100vh",
+              overflow: "auto",
+              padding: "20px",
+            }}
+          >
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const startIndex = virtualRow.index * getNumColumns();
+                const rowCountries = countries
+                  .sort((a, b) => Number(b.active) - Number(a.active))
+                  .slice(startIndex, startIndex + getNumColumns());
                 return (
-                  <CountryCard
-                    onEdit={handleEditCountry}
-                    country={country}
-                    content={content}
-                    key={country.id}
+                  <div
+                    key={virtualRow.index}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      transform: `translateY(${virtualRow.start}px)`,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "40px",
+                    }}
                   >
-                    <Image flag={country.flag} name={country.name[language]} />
-                    <Details
-                      renderHeader={<Header name={country.name[language]} />}
-                    >
-                      <Content
+                    {rowCountries.map((country) => (
+                      <CountryCard
+                        onEdit={handleEditCountry}
+                        country={country}
                         content={content}
-                        capital={country.capital[language]}
-                        population={country.population[language]}
-                        id={country.id}
-                        onCountryDelete={handleDeleteCountry}
-                      />
-                    </Details>
-                    <Likes
-                      handleLikeButton={() => handleLikeButton(country.id)}
-                      likes={country.likes}
-                    />
-                  </CountryCard>
+                        key={country.id}
+                      >
+                        <Image
+                          flag={country.flag}
+                          name={country.name[language]}
+                        />
+                        <Details
+                          renderHeader={
+                            <Header name={country.name[language]} />
+                          }
+                        >
+                          <Content
+                            content={content}
+                            capital={country.capital[language]}
+                            population={country.population[language]}
+                            id={country.id}
+                            onCountryDelete={handleDeleteCountry}
+                          />
+                        </Details>
+                        <Likes
+                          handleLikeButton={() => handleLikeButton(country.id)}
+                          likes={country.likes}
+                        />
+                      </CountryCard>
+                    ))}
+                  </div>
                 );
               })}
+            </div>
             {isError && "ერორი მოხდა"}
           </div>
         </>
