@@ -12,15 +12,19 @@ import { CountyFormData } from "@/pages/countries/types";
 import { Countries } from "@/language/language";
 import InputOTP from "./inputOTP";
 import { Country } from "./reducer/state";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useSearchParams } from "react-router-dom";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import {
   createCountry,
   deleteCountry,
   getCountries,
   editCountry,
 } from "@/api/countries";
+
+const ITEMS_PER_PAGE = 12;
+
 
 const CountriesComp: React.FC<{
   language: "en" | "ka";
@@ -32,22 +36,41 @@ const CountriesComp: React.FC<{
   const parentRef = useRef<HTMLDivElement>(null);
 
   const {
-    data: countries = [],
+    data,
+    fetchNextPage,
+    hasNextPage,
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+    isFetchingNextPage
+  } = useInfiniteQuery({
     queryKey: ["countries", currentSort],
-    queryFn: () => {
-      let endpoint = "/countries";
-      if (currentSort === "asc") {
-        endpoint += "?_sort=likes";
-      } else if (currentSort === "desc") {
-        endpoint += "?_sort=-likes";
-      }
-      return getCountries(endpoint);
+    queryFn: ({ pageParam = 1 }) => {
+      return getCountries({
+        page: pageParam,
+        limit: ITEMS_PER_PAGE,
+        sort: "likes",
+        order: currentSort === "desc" ? "desc" : "asc"
+      });
     },
-    retry: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage.hasMore) return undefined;
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+
+  const allCountries = data?.pages.flatMap(page => page.data) || [];
+
+  const loadMoreRef = useInfiniteScroll<HTMLDivElement>({
+    loading: isFetchingNextPage,
+    hasMore: !!hasNextPage,
+    onLoadMore: () => {
+      if (!isFetchingNextPage && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    rootMargin: "100px"
   });
 
   const getNumColumns = useCallback(() => {
@@ -58,7 +81,7 @@ const CountriesComp: React.FC<{
   }, []);
 
   const rowVirtualizer = useVirtualizer({
-    count: Math.ceil(countries.length / getNumColumns()),
+    count: Math.ceil(allCountries.length / getNumColumns()),
     getScrollElement: () => parentRef.current,
     estimateSize: () => 134 + 40,
     overscan: 2,
@@ -77,16 +100,12 @@ const CountriesComp: React.FC<{
   });
 
   const handleLikeButton = (id: string) => {
-    const country = countries.find((c) => c.id === id);
+    const country = allCountries.find((c) => c.id === id);
     if (country) {
-      editCountryMutate(
-        { id, payload: { ...country, likes: country.likes + 1 } },
-        {
-          onSuccess: () => {
-            refetch();
-          },
-        },
-      );
+      editCountryMutate({
+        id,
+        payload: { ...country, likes: country.likes + 1 },
+      });
     }
   };
 
@@ -96,19 +115,12 @@ const CountriesComp: React.FC<{
 
   const handleCreateCounty = (formData: CountyFormData) => {
     const newCountry = {
-      id: (Number(countries.at(-1)?.id) + 1).toString(),
+      id: (Number(allCountries.at(-1)?.id) + 1).toString(),
       ...formData,
       likes: 0,
       active: true,
     };
-    createCountryMutate(
-      { payload: newCountry },
-      {
-        onSuccess: () => {
-          refetch();
-        },
-      },
-    );
+    createCountryMutate({ payload: newCountry });
   };
 
   const handleEditCountry = (updatedData: Country, id: string) => {
@@ -138,7 +150,10 @@ const CountriesComp: React.FC<{
         "Loading..."
       ) : (
         <>
-          <SortButtons content={content} handleSortButton={handleSortButton} />
+          <SortButtons 
+            content={content} 
+            handleSortButton={handleSortButton}
+          />
           <div className={styles.appCountriesForms}>
             <AddCountry content={content} onCountyCreate={handleCreateCounty} />
             <InputOTP length={6} />
@@ -161,8 +176,7 @@ const CountriesComp: React.FC<{
             >
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const startIndex = virtualRow.index * getNumColumns();
-                const rowCountries = countries
-                  .sort((a, b) => Number(b.active) - Number(a.active))
+                const rowCountries = allCountries
                   .slice(startIndex, startIndex + getNumColumns());
                 return (
                   <div
@@ -212,12 +226,16 @@ const CountriesComp: React.FC<{
                 );
               })}
             </div>
+            <div ref={loadMoreRef} style={{ height: "20px", margin: "20px 0" }}>
+              {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load more" : "No more countries"}
+            </div>
             {isError && "ერორი მოხდა"}
           </div>
         </>
       )}
     </div>
   );
+  
 };
 
 export default CountriesComp;

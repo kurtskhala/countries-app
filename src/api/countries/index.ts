@@ -1,11 +1,53 @@
 import { httpClient } from "@/api";
 import { Country } from "@/pages/countries/components/list/countries/reducer/state";
 
-export const getCountries = async (endpoint?: string): Promise<Country[]> => {
+interface GetCountriesParams {
+  sort?: string;
+  order?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+}
+
+export const getCountries = async (
+  params?: GetCountriesParams,
+): Promise<{
+  data: Country[];
+  hasMore: boolean;
+  total: number;
+}> => {
   try {
-    const url = endpoint || "/countries";
+    let url = "/countries";
+    const queryParams = new URLSearchParams();
+
+    if (params) {
+      if (params.sort) {
+        const sortPrefix = params.order === "desc" ? "-" : "";
+        queryParams.append("_sort", `${sortPrefix}${params.sort}`);
+      }
+
+      if (params.page && params.limit) {
+        queryParams.append("_page", params.page.toString());
+        queryParams.append("_limit", params.limit.toString());
+      }
+    }
+
+    const queryString = queryParams.toString();
+    if (queryString) {
+      url += `?${queryString}`;
+    }
+    const countResponse = await httpClient.get("/countries");
+    const total = countResponse.data.length;
+
     const response = await httpClient.get(url);
-    return response.data;
+
+    const currentCount = (params?.page || 1) * (params?.limit || 12);
+    const hasMore = currentCount < total;
+
+    return {
+      data: response.data,
+      hasMore,
+      total,
+    };
   } catch (e) {
     console.error(e);
     throw e;
