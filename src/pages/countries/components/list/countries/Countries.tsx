@@ -25,7 +25,6 @@ import {
 
 const ITEMS_PER_PAGE = 12;
 
-
 const CountriesComp: React.FC<{
   language: "en" | "ka";
   content: Countries;
@@ -42,7 +41,7 @@ const CountriesComp: React.FC<{
     isLoading,
     isError,
     refetch,
-    isFetchingNextPage
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["countries", currentSort],
     queryFn: ({ pageParam = 1 }) => {
@@ -50,7 +49,7 @@ const CountriesComp: React.FC<{
         page: pageParam,
         limit: ITEMS_PER_PAGE,
         sort: "likes",
-        order: currentSort === "desc" ? "desc" : "asc"
+        order: currentSort === "desc" ? "desc" : "asc",
       });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -60,7 +59,7 @@ const CountriesComp: React.FC<{
     initialPageParam: 1,
   });
 
-  const allCountries = data?.pages.flatMap(page => page.data) || [];
+  const allCountries = data?.pages.flatMap((page) => page.data) || [];
 
   const loadMoreRef = useInfiniteScroll<HTMLDivElement>({
     loading: isFetchingNextPage,
@@ -70,7 +69,7 @@ const CountriesComp: React.FC<{
         fetchNextPage();
       }
     },
-    rootMargin: "100px"
+    rootMargin: "100px",
   });
 
   const getNumColumns = useCallback(() => {
@@ -150,10 +149,7 @@ const CountriesComp: React.FC<{
         "Loading..."
       ) : (
         <>
-          <SortButtons 
-            content={content} 
-            handleSortButton={handleSortButton}
-          />
+          <SortButtons content={content} handleSortButton={handleSortButton} />
           <div className={styles.appCountriesForms}>
             <AddCountry content={content} onCountyCreate={handleCreateCounty} />
             <InputOTP length={6} />
@@ -176,8 +172,10 @@ const CountriesComp: React.FC<{
             >
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const startIndex = virtualRow.index * getNumColumns();
-                const rowCountries = allCountries
-                  .slice(startIndex, startIndex + getNumColumns());
+                const rowCountries = allCountries.slice(
+                  startIndex,
+                  startIndex + getNumColumns(),
+                );
                 return (
                   <div
                     key={virtualRow.index}
@@ -227,7 +225,11 @@ const CountriesComp: React.FC<{
               })}
             </div>
             <div ref={loadMoreRef} style={{ height: "20px", margin: "20px 0" }}>
-              {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Load more" : "No more countries"}
+              {isFetchingNextPage
+                ? "Loading more..."
+                : hasNextPage
+                  ? "Load more"
+                  : "No more countries"}
             </div>
             {isError && "ერორი მოხდა"}
           </div>
@@ -235,7 +237,6 @@ const CountriesComp: React.FC<{
       )}
     </div>
   );
-  
 };
 
 export default CountriesComp;
